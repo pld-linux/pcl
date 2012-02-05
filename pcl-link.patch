@@ -1,0 +1,11 @@
+--- PCL-1.4.0-Source/io/CMakeLists.txt.orig	2012-01-02 02:39:42.000000000 +0100
++++ PCL-1.4.0-Source/io/CMakeLists.txt	2012-02-05 07:40:35.813404104 +0100
+@@ -112,7 +112,7 @@
+     target_link_libraries(${LIB_NAME} pcl_common ${VTK_IO_TARGET_LINK_LIBRARIES})
+ 
+     if(OPENNI_FOUND)
+-      target_link_libraries(${LIB_NAME} ${OPENNI_LIBRARIES})
++      target_link_libraries(${LIB_NAME} ${OPENNI_LIBRARIES} usb-1.0)
+     endif(OPENNI_FOUND)
+ 
+     set(EXT_DEPS eigen3)
