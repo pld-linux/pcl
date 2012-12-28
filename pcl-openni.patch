@@ -1,0 +1,24 @@
+--- PCL-1.6.0-Source/io/CMakeLists.txt.orig	2012-07-18 01:11:32.000000000 +0200
++++ PCL-1.6.0-Source/io/CMakeLists.txt	2012-12-28 15:34:55.362591817 +0100
+@@ -139,9 +139,6 @@
+     endif(OPENNI_FOUND)
+ 
+     set(EXT_DEPS eigen3)
+-    if(OPENNI_FOUND)
+-      list(APPEND EXT_DEPS openni-dev)
+-    endif(OPENNI_FOUND)
+     PCL_MAKE_PKGCONFIG(${LIB_NAME} ${SUBSYS_NAME} "${SUBSYS_DESC}"
+       "${SUBSYS_DEPS}" "${EXT_DEPS}" "" "" "")
+ 
+--- PCL-1.6.0-Source/visualization/CMakeLists.txt.orig	2012-07-18 01:11:32.000000000 +0200
++++ PCL-1.6.0-Source/visualization/CMakeLists.txt	2012-12-28 15:37:49.779254847 +0100
+@@ -99,9 +99,6 @@
+     endif()
+ 
+     set(EXT_DEPS "")
+-    if(OPENNI_FOUND)
+-      list(APPEND EXT_DEPS openni-dev)
+-    endif(OPENNI_FOUND)
+     PCL_MAKE_PKGCONFIG(${LIB_NAME} ${SUBSYS_NAME} "${SUBSYS_DESC}"
+       "${SUBSYS_DEPS}" "${EXT_DEPS}" "" "" "")
+ 

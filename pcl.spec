@@ -15,6 +15,7 @@ Group:		Libraries
 Source0:	http://www.pointclouds.org/assets/files/1.6.0/PCL-%{version}-Source.tar.bz2
 # Source0-md5:	f83ca5d0ff290412b0807864b95eba26
 Patch0:		%{name}-link.patch
+Patch1:		%{name}-openni.patch
 URL:		http://pointclouds.org/
 BuildRequires:	OpenNI-devel
 BuildRequires:	boost-devel >= 1.40
@@ -89,6 +90,7 @@ Dokumentacja API oraz wprowadzenie do biblioteki PCL.
 %prep
 %setup -q -n PCL-%{version}-Source
 %patch0 -p1
+%patch1 -p1
 
 # don't use SSE/SSE2/SSE3 just because compiler and builder host supports it
 %{__sed} -i -e '/^PCL_CHECK_FOR_SSE/d' CMakeLists.txt
@@ -96,7 +98,9 @@ Dokumentacja API oraz wprowadzenie do biblioteki PCL.
 %build
 mkdir build
 cd build
-%cmake ..
+# LIB_INSTALL_DIR specified by PLD cmake macro is incompatible with what PCL expects
+%cmake .. \
+	-DLIB_INSTALL_DIR=%{_lib}
 %{__make}
 
 # why it's not called on build?
