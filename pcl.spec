@@ -8,7 +8,7 @@ Summary:	Point Cloud Library - library for point cloud processing
 Summary(pl.UTF-8):	Point Cloud Library - biblioteka do operacji na chmurze punktów
 Name:		pcl
 Version:	1.6.0
-Release:	1
+Release:	2
 License:	BSD
 Group:		Libraries
 #Source0Download: http://pointclouds.org/downloads/
@@ -101,7 +101,9 @@ cd build
 # LIB_INSTALL_DIR specified by PLD cmake macro is incompatible with what PCL expects
 %cmake .. \
 	-DLIB_INSTALL_DIR=%{_lib}
-%{__make}
+
+# NOTE: -j1 because of OOM on th-x86_64
+%{__make} -j1
 
 # why it's not called on build?
 %if %{with apidocs}
