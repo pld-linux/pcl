@@ -33,7 +33,6 @@ BuildRequires:	sed >= 4.0
 %{?with_vtk:BuildRequires:	vtk-devel}
 %{?with_vtk:BuildRequires:	vtk-java}
 %{?with_vtk:BuildRequires:	vtk-python}
-%{?with_vtk:BuildRequires:	vtk-python-qt}
 %{?with_vtk:BuildRequires:	vtk-tcl}
 %if %{with apidocs}
 BuildRequires:	doxygen
