@@ -31,9 +31,9 @@ BuildRequires:	python
 BuildRequires:	sed >= 4.0
 # FIXME: only vtk-devel is really required, the rest only because of checks in VTK cmake files
 %{?with_vtk:BuildRequires:	vtk-devel}
-%{?with_vtk:BuildRequires:	vtk-java}
-%{?with_vtk:BuildRequires:	vtk-python}
-%{?with_vtk:BuildRequires:	vtk-tcl}
+%{?with_vtk:BuildRequires:	vtk-java-devel}
+%{?with_vtk:BuildRequires:	vtk-python-devel}
+%{?with_vtk:BuildRequires:	vtk-tcl-devel}
 %if %{with apidocs}
 BuildRequires:	doxygen
 BuildRequires:	python-sphinxcontrib-doxylink >= 1.3
