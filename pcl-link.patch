@@ -1,6 +1,0 @@
---- PCL-1.6.0-Source/examples/segmentation/CMakeLists.txt.orig	2012-07-18 01:11:32.000000000 +0200
-+++ PCL-1.6.0-Source/examples/segmentation/CMakeLists.txt	2012-12-21 17:53:09.575024862 +0100
-@@ -1,2 +1,2 @@
- PCL_ADD_EXAMPLE(pcl_example_extract_clusters_normals FILES example_extract_clusters_normals.cpp
--		                LINK_WITH pcl_common  pcl_visualization pcl_keypoints pcl_io pcl_segmentation)
-+		                LINK_WITH pcl_common  pcl_keypoints pcl_io pcl_segmentation)
