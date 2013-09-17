@@ -1,4 +1,6 @@
 # TODO: MPI, ROS?
+# Fotonic (GZAPI)
+# tide (in tools)
 #
 # Conditional build:
 %bcond_without	apidocs	# do not build and package API docs
@@ -18,23 +20,30 @@ Source0:	https://github.com/PointCloudLibrary/pcl/archive/%{name}-%{version}.tar
 Patch0:		%{name}-openni.patch
 Patch1:		%{name}-vtk6.patch
 URL:		http://pointclouds.org/
+BuildRequires:	OpenGL-devel
+BuildRequires:	OpenGL-GLU-devel
 BuildRequires:	OpenNI-devel
-BuildRequires:	boost-devel >= 1.40
+BuildRequires:	QtCore-devel >= 4
+BuildRequires:	QtOpenGL-devel >= 4
+BuildRequires:	boost-devel >= 1.43
 BuildRequires:	cmake >= 2.8
 BuildRequires:	eigen3 >= 3
-BuildRequires:	flann-devel
+BuildRequires:	flann-devel >= 1.7.0
 BuildRequires:	gcc-c++ >= 6:4.2
 BuildRequires:	libgomp-devel
+BuildRequires:	libpcap-devel
+BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libusb-devel >= 1.0
 BuildRequires:	qhull-devel
+BuildRequires:	qt4-build >= 4
 BuildRequires:	python
 BuildRequires:	sed >= 4.0
 # FIXME: only vtk-devel is really required, the rest (java,python,tcl runtimes) only because of checks in VTK cmake files
-%{?with_vtk:BuildRequires:	vtk-devel}
-%{?with_vtk:BuildRequires:	vtk-java}
-%{?with_vtk:BuildRequires:	vtk-python}
-%{?with_vtk:BuildRequires:	vtk-tcl}
+%{?with_vtk:BuildRequires:	vtk-devel >= 6}
+%{?with_vtk:BuildRequires:	vtk-java >= 6}
+%{?with_vtk:BuildRequires:	vtk-python >= 6}
+%{?with_vtk:BuildRequires:	vtk-tcl >= 6}
 %if %{with apidocs}
 BuildRequires:	doxygen
 BuildRequires:	python-sphinxcontrib-doxylink >= 1.3
@@ -68,7 +77,8 @@ Summary:	Header files for PCL library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki PCL
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-%{?with_vtk:Requires:	vtk-devel}
+Requires:	boost-devel >= 1.44
+%{?with_vtk:Requires:	vtk-devel >= 6}
 
 %description devel
 Header files for PCL library.
