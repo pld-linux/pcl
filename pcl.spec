@@ -1,10 +1,10 @@
 # TODO: MPI, ROS?
-# Fotonic (GZAPI)
-# tide (in tools)
 #
 # Conditional build:
 %bcond_without	apidocs	# do not build and package API docs
+%bcond_without	fzapi	# Fotonic FZ API support
 %bcond_with	sse	# SSE/SSE2/SSE3 support
+%bcond_without	tawara	# Tawara video output (pcl_video)
 %bcond_without	vtk	# VTK support in libpcl_{io,surface} + libpcl_{apps,visualization} libs
 #
 Summary:	Point Cloud Library - library for point cloud processing
@@ -19,6 +19,8 @@ Source0:	https://github.com/PointCloudLibrary/pcl/archive/%{name}-%{version}.tar
 # Source0-md5:	e2ac2d2e72825d991c6d194f9586b5d8
 Patch0:		%{name}-openni.patch
 Patch1:		%{name}-vtk6.patch
+Patch2:		%{name}-fz_api.patch
+Patch3:		%{name}-tawara.patch
 URL:		http://pointclouds.org/
 BuildRequires:	OpenGL-devel
 BuildRequires:	OpenGL-GLU-devel
@@ -29,6 +31,7 @@ BuildRequires:	boost-devel >= 1.43
 BuildRequires:	cmake >= 2.8
 BuildRequires:	eigen3 >= 3
 BuildRequires:	flann-devel >= 1.7.0
+%{?with_fzapi:BuildRequires:	fz-api-devel}
 BuildRequires:	gcc-c++ >= 6:4.2
 BuildRequires:	libgomp-devel
 BuildRequires:	libpcap-devel
@@ -39,6 +42,7 @@ BuildRequires:	qhull-devel
 BuildRequires:	qt4-build >= 4
 BuildRequires:	python
 BuildRequires:	sed >= 4.0
+%{?with_tawara:BuildRequires:	tawara-devel}
 # FIXME: only vtk-devel is really required, the rest (java,python,tcl runtimes) only because of checks in VTK cmake files
 %{?with_vtk:BuildRequires:	vtk-devel >= 6}
 %{?with_vtk:BuildRequires:	vtk-java >= 6}
@@ -101,9 +105,8 @@ Dokumentacja API oraz wprowadzenie do biblioteki PCL.
 %setup -q -n pcl-pcl-%{version}
 %patch0 -p1
 %patch1 -p1
-
-# don't use SSE/SSE2/SSE3 just because compiler and builder host supports it
-#%{__sed} -i -e '/^PCL_CHECK_FOR_SSE/d' CMakeLists.txt
+%patch2 -p1
+%patch3 -p1
 
 %build
 mkdir build
@@ -111,6 +114,11 @@ cd build
 # LIB_INSTALL_DIR specified by PLD cmake macro is incompatible with what PCL expects
 %cmake .. \
 	-DLIB_INSTALL_DIR=%{_lib} \
+%if %{with fzapi}
+	-DFZAPI_DIR=/usr \
+	-DFZAPI_INCLUDE_DIR=/usr/include \
+	-DFZAPI_LIBS=%{_libdir}/libfz_api.so \
+%endif
 	%{!?with_sse:-DPCL_ENABLE_SSE=OFF}
 
 # NOTE: -j1 because of OOM on th-x86_64
@@ -222,6 +230,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/pcl_transform_from_viewpoint
 %attr(755,root,root) %{_bindir}/pcl_transform_point_cloud
 %attr(755,root,root) %{_bindir}/pcl_vfh_estimation
+%{?with_tawara:%attr(755,root,root) %{_bindir}/pcl_video}
 %attr(755,root,root) %{_bindir}/pcl_viewer
 %attr(755,root,root) %{_bindir}/pcl_virtual_scanner
 %attr(755,root,root) %{_bindir}/pcl_voxel_grid
