@@ -6,12 +6,12 @@
 %bcond_with	sse	# SSE/SSE2/SSE3 support
 %bcond_without	tawara	# Tawara video output (pcl_video)
 %bcond_without	vtk	# VTK support in libpcl_{io,surface} + libpcl_{apps,visualization} libs
-#
+
 Summary:	Point Cloud Library - library for point cloud processing
 Summary(pl.UTF-8):	Point Cloud Library - biblioteka do operacji na chmurze punktów
 Name:		pcl
 Version:	1.7.0
-Release:	3
+Release:	4
 License:	BSD
 Group:		Libraries
 #Source0Download: http://pointclouds.org/downloads/
@@ -94,6 +94,9 @@ Pliki nagłówkowe biblioteki PCL.
 Summary:	PCL API documentation and tutorials
 Summary(pl.UTF-8):	Dokumentacja API oraz wprowadzenie do biblioteki PCL
 Group:		Documentation
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description apidocs
 API documentation and tutorials for PCL library.
