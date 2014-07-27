@@ -10,17 +10,16 @@
 Summary:	Point Cloud Library - library for point cloud processing
 Summary(pl.UTF-8):	Point Cloud Library - biblioteka do operacji na chmurze punktów
 Name:		pcl
-Version:	1.7.0
-Release:	4
+Version:	1.7.1
+Release:	1
 License:	BSD
 Group:		Libraries
 #Source0Download: http://pointclouds.org/downloads/
 Source0:	https://github.com/PointCloudLibrary/pcl/archive/%{name}-%{version}.tar.gz
-# Source0-md5:	e2ac2d2e72825d991c6d194f9586b5d8
-Patch0:		%{name}-openni.patch
-Patch1:		%{name}-vtk6.patch
-Patch2:		%{name}-fz_api.patch
-Patch3:		%{name}-tawara.patch
+# Source0-md5:	ce8fa17662544eb4bb7b084191a61ad5
+Patch0:		%{name}-vtk6.patch
+Patch1:		%{name}-fz_api.patch
+Patch2:		%{name}-tawara.patch
 URL:		http://pointclouds.org/
 BuildRequires:	OpenGL-devel
 BuildRequires:	OpenGL-GLU-devel
@@ -109,7 +108,6 @@ Dokumentacja API oraz wprowadzenie do biblioteki PCL.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
 
 %build
 mkdir build
@@ -218,6 +216,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/pcl_outlier_removal
 %attr(755,root,root) %{_bindir}/pcl_passthrough_filter
 %attr(755,root,root) %{_bindir}/pcl_pcd2ply
+%attr(755,root,root) %{_bindir}/pcl_pcd2png
 %attr(755,root,root) %{_bindir}/pcl_pcd2vtk
 %attr(755,root,root) %{_bindir}/pcl_pcd_grabber_viewer
 %attr(755,root,root) %{_bindir}/pcl_pcd_image_viewer
@@ -307,6 +306,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_pkgconfigdir}/pcl_common-1.7.pc
 %{_pkgconfigdir}/pcl_features-1.7.pc
 %{_pkgconfigdir}/pcl_filters-1.7.pc
+%{_pkgconfigdir}/pcl_geometry-1.7.pc
 %{_pkgconfigdir}/pcl_io-1.7.pc
 %{_pkgconfigdir}/pcl_kdtree-1.7.pc
 %{_pkgconfigdir}/pcl_keypoints-1.7.pc
