@@ -1,7 +1,7 @@
 --- pcl-pcl-1.7.0/tools/CMakeLists.txt.orig	2013-09-15 20:30:42.553276043 +0200
 +++ pcl-pcl-1.7.0/tools/CMakeLists.txt	2013-09-19 21:27:13.421963621 +0200
 @@ -230,14 +230,14 @@
-   PCL_ADD_EXECUTABLE (pcl_transform_from_viewpoint ${SUBSYS_NAME} transform_from_viewpoint.cpp)
+   PCL_ADD_EXECUTABLE (pcl_transform_from_viewpoint "${SUBSYS_NAME}" transform_from_viewpoint.cpp)
    target_link_libraries (pcl_transform_from_viewpoint pcl_common pcl_io pcl_registration)
  
 -  find_package(tide QUIET)
@@ -12,7 +12,7 @@
 +  if(Tawara_FOUND)
 +      include_directories(${Tawara_INCLUDE_DIRS})
 +      add_definitions(${Tawara_DEFINITIONS})
-       PCL_ADD_EXECUTABLE(pcl_video ${SUBSYS_NAME} pcl_video.cpp)
+       PCL_ADD_EXECUTABLE(pcl_video "${SUBSYS_NAME}" pcl_video.cpp)
        target_link_libraries(pcl_video pcl_common pcl_io pcl_visualization
 -          ${Tide_LIBRARIES})
 -  endif(Tide_FOUND)
@@ -20,7 +20,7 @@
 +  endif(Tawara_FOUND)
    
  
- endif ()
+ endif (BUILD_tools)
 --- pcl-pcl-1.7.0/tools/pcl_video.cpp.orig	2013-07-23 19:21:02.000000000 +0200
 +++ pcl-pcl-1.7.0/tools/pcl_video.cpp	2013-09-19 21:29:01.191959097 +0200
 @@ -36,13 +36,13 @@

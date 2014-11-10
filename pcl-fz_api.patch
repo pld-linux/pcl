@@ -1,9 +1,9 @@
 --- pcl-pcl-1.7.0/cmake/Modules/FindFZAPI.cmake.orig	2013-07-23 19:21:02.000000000 +0200
 +++ pcl-pcl-1.7.0/cmake/Modules/FindFZAPI.cmake	2013-09-19 21:29:44.661957271 +0200
 @@ -17,7 +17,7 @@
+     DOC "Fotonic include directories")
  	
    # Find libraries
-   #MESSAGE("Searching Fotonic libs: ${FZ_API_DIR}/Release")
 -  find_library(FZAPI_LIBS fotonic_fz_api
 +  find_library(FZAPI_LIBS fz_api
      HINTS "${FZ_API_DIR}/Release" NO_DEFAULT_PATH
