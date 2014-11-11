@@ -118,18 +118,14 @@ cd build
 	-DFZAPI_INCLUDE_DIR=/usr/include \
 	-DFZAPI_LIBS=%{_libdir}/libfz_api.so \
 %endif
+%if %{with apidocs}
+	-DWITH_DOCS=ON \
+	-DWITH_TUTORIALS=ON \
+%endif
 	%{!?with_sse:-DPCL_ENABLE_SSE=OFF}
 
 # NOTE: -j1 because of OOM on th-x86_64
 %{__make} -j1
-
-# why it's not called on build?
-%if %{with apidocs}
-cd doc/doxygen
-doxygen doxyfile
-cd ../tutorials
-sphinx-build -b html -a -d doctrees ../../../doc/tutorials/content html
-%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -146,17 +142,23 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS.txt LICENSE.txt
+%attr(755,root,root) %{_bindir}/pcl_compute_hausdorff
 %attr(755,root,root) %{_bindir}/pcl_compute_hull
 %attr(755,root,root) %{_bindir}/pcl_concatenate_points_pcd
 %attr(755,root,root) %{_bindir}/pcl_convert_pcd_ascii_binary
 %attr(755,root,root) %{_bindir}/pcl_demean_cloud
 %attr(755,root,root) %{_bindir}/pcl_fast_bilateral_filter
+%attr(755,root,root) %{_bindir}/pcl_generate
+%attr(755,root,root) %{_bindir}/pcl_grid_min
 %attr(755,root,root) %{_bindir}/pcl_hdl_grabber
 %attr(755,root,root) %{_bindir}/pcl_linemod_detection
+%attr(755,root,root) %{_bindir}/pcl_local_max
 %attr(755,root,root) %{_bindir}/pcl_lum
 %attr(755,root,root) %{_bindir}/pcl_match_linemod_template
+%attr(755,root,root) %{_bindir}/pcl_morph
 %attr(755,root,root) %{_bindir}/pcl_ndt2d
 %attr(755,root,root) %{_bindir}/pcl_ndt3d
+%attr(755,root,root) %{_bindir}/pcl_obj2pcd
 %attr(755,root,root) %{_bindir}/pcl_oni2pcd
 %attr(755,root,root) %{_bindir}/pcl_openni_grabber_depth_example
 %attr(755,root,root) %{_bindir}/pcl_openni_grabber_example
@@ -171,6 +173,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/pcl_ply2ply
 %attr(755,root,root) %{_bindir}/pcl_ply2raw
 %attr(755,root,root) %{_bindir}/pcl_plyheader
+%attr(755,root,root) %{_bindir}/pcl_progressive_morphological_filter
 %attr(755,root,root) %{_bindir}/pcl_radius_filter
 %attr(755,root,root) %{_bindir}/pcl_sac_segmentation_plane
 %attr(755,root,root) %{_bindir}/pcl_train_linemod_template
@@ -328,6 +331,7 @@ rm -rf $RPM_BUILD_ROOT
 %files apidocs
 %defattr(644,root,root,755)
 %dir %{_docdir}/pcl-1.7
+%{_docdir}/pcl-1.7/advanced
 %{_docdir}/pcl-1.7/html
 %{_docdir}/pcl-1.7/tutorials
 %endif
