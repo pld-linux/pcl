@@ -1,0 +1,71 @@
+--- pcl-pcl-1.7.2/./PCLConfig.cmake.in~	2014-09-10 23:22:57.000000000 +0200
++++ pcl-pcl-1.7.2/./PCLConfig.cmake.in	2014-11-11 11:37:12.494124290 +0100
+@@ -182,13 +182,13 @@ macro(find_openni)
+   endif(NOT OPENNI_ROOT AND ("@HAVE_OPENNI@" STREQUAL "ON"))
+ 
+   if(PKG_CONFIG_FOUND)
+-    pkg_check_modules(PC_OPENNI openni-dev)
++    pkg_check_modules(PC_OPENNI libopenni)
+   endif(PKG_CONFIG_FOUND)
+   find_path(OPENNI_INCLUDE_DIRS XnStatus.h
+     HINTS ${PC_OPENNI_INCLUDEDIR} ${PC_OPENNI_INCLUDE_DIRS} 
+           "${OPENNI_ROOT}" "$ENV{OPENNI_ROOT}"
+     PATHS "$ENV{OPEN_NI_INCLUDE}" "${OPENNI_INCLUDE_DIRS_HINT}"
+-    PATH_SUFFIXES include/openni Include)
++    PATH_SUFFIXES include/openni include/ni Include)
+   #add a hint so that it can find it without the pkg-config
+   set(OPENNI_SUFFIX)
+   if(WIN32 AND CMAKE_SIZEOF_VOID_P EQUAL 8)
+@@ -222,7 +222,7 @@ macro(find_openni2)
+   endif(WIN32 AND CMAKE_SIZEOF_VOID_P EQUAL 8)
+   
+   if(PKG_CONFIG_FOUND)
+-    pkg_check_modules(PC_OPENNI2 openni2-dev)
++    pkg_check_modules(PC_OPENNI2 libopenni2)
+   endif(PKG_CONFIG_FOUND)
+   
+   find_path(OPENNI2_INCLUDE_DIRS OpenNI.h
+--- pcl-pcl-1.7.2/./cmake/Modules/FindOpenNI.cmake~	2014-09-10 23:22:57.000000000 +0200
++++ pcl-pcl-1.7.2/./cmake/Modules/FindOpenNI.cmake	2014-11-11 11:37:58.671931739 +0100
+@@ -35,9 +35,9 @@ if(NOT WIN32)
+ endif(NOT WIN32)
+ 
+ if(${CMAKE_VERSION} VERSION_LESS 2.8.2)
+-  pkg_check_modules(PC_OPENNI openni-dev)
++  pkg_check_modules(PC_OPENNI libopenni)
+ else()
+-  pkg_check_modules(PC_OPENNI QUIET openni-dev)
++  pkg_check_modules(PC_OPENNI QUIET libopenni)
+ endif()
+ 
+ set(OPENNI_DEFINITIONS ${PC_OPENNI_CFLAGS_OTHER})
+--- pcl-pcl-1.7.2/./io/CMakeLists.txt~	2014-09-10 23:22:57.000000000 +0200
++++ pcl-pcl-1.7.2/./io/CMakeLists.txt	2014-11-11 11:38:42.636351255 +0100
+@@ -329,10 +329,10 @@ if(build)
+     set(EXT_DEPS eigen3)
+ 
+     if(OPENNI_FOUND)
+-      list(APPEND EXT_DEPS openni-dev)
++      list(APPEND EXT_DEPS libopenni)
+     endif(OPENNI_FOUND)
+     if(OPENNI2_FOUND)
+-      list(APPEND EXT_DEPS openni2-dev)
++      list(APPEND EXT_DEPS libopenni2)
+     endif(OPENNI2_FOUND)
+ 
+     PCL_MAKE_PKGCONFIG("${LIB_NAME}" "${SUBSYS_NAME}" "${SUBSYS_DESC}"
+--- pcl-pcl-1.7.2/./visualization/CMakeLists.txt~	2014-09-10 23:22:57.000000000 +0200
++++ pcl-pcl-1.7.2/./visualization/CMakeLists.txt	2014-11-11 11:39:19.057251297 +0100
+@@ -154,10 +154,10 @@ if(build)
+ 
+     set(EXT_DEPS "")
+     if(OPENNI_FOUND)
+-      list(APPEND EXT_DEPS openni-dev)
++      list(APPEND EXT_DEPS libopenni)
+     endif(OPENNI_FOUND)
+ 	if(OPENNI2_FOUND)
+-      list(APPEND EXT_DEPS openni2-dev)
++      list(APPEND EXT_DEPS libopenni2)
+     endif(OPENNI2_FOUND)
+     PCL_MAKE_PKGCONFIG("${LIB_NAME}" "${SUBSYS_NAME}" "${SUBSYS_DESC}"
+       "${SUBSYS_DEPS}" "${EXT_DEPS}" "" "" "")
