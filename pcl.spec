@@ -11,7 +11,7 @@ Summary:	Point Cloud Library - library for point cloud processing
 Summary(pl.UTF-8):	Point Cloud Library - biblioteka do operacji na chmurze punktów
 Name:		pcl
 Version:	1.7.2
-Release:	3
+Release:	4
 License:	BSD
 Group:		Libraries
 #Source0Download: http://pointclouds.org/downloads/
@@ -23,6 +23,7 @@ Patch2:		%{name}-openni.patch
 URL:		http://pointclouds.org/
 BuildRequires:	OpenGL-devel
 BuildRequires:	OpenGL-GLU-devel
+BuildRequires:	OpenNI-devel
 BuildRequires:	OpenNI2-devel
 BuildRequires:	QtCore-devel >= 4
 BuildRequires:	QtOpenGL-devel >= 4
