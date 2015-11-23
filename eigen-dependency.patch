@@ -1,0 +1,11 @@
+--- pcl-pcl-1.7.2/common/CMakeLists.txt.orig	2014-09-10 23:22:57.000000000 +0200
++++ pcl-pcl-1.7.2/common/CMakeLists.txt	2015-11-23 07:51:39.174060606 +0100
+@@ -176,7 +176,7 @@
+     include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include")
+     PCL_ADD_LIBRARY("${LIB_NAME}" "${SUBSYS_NAME}" ${srcs} ${kissfft_srcs} ${incs} ${common_incs} ${impl_incs} ${ros_incs} ${tools_incs} ${kissfft_incs} ${common_incs_impl} ${range_image_incs} ${range_image_incs_impl})
+     #PCL_ADD_LIBRARY("${LIB_NAME}" "${SUBSYS_NAME}" ${srcs} ${incs} ${common_incs} ${impl_incs} ${ros_incs} ${tools_incs} ${common_incs_impl} ${range_image_incs} ${range_image_incs_impl})
+-    PCL_MAKE_PKGCONFIG("${LIB_NAME}" "${SUBSYS_NAME}" "${SUBSYS_DESC}" "" ""
++    PCL_MAKE_PKGCONFIG("${LIB_NAME}" "${SUBSYS_NAME}" "${SUBSYS_DESC}" "" "eigen3"
+         "" "" "")
+ 
+     # Install include files
