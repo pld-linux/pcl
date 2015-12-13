@@ -51,8 +51,8 @@ BuildRequires:	sed >= 4.0
 %{?with_vtk:BuildRequires:	vtk-tcl >= 6}
 %if %{with apidocs}
 BuildRequires:	doxygen
-BuildRequires:	python-sphinxcontrib-doxylink >= 1.3
-BuildRequires:	sphinx-pdg
+BuildRequires:	python3-sphinxcontrib-doxylink >= 1.3
+BuildRequires:	sphinx-pdg >= 1.3.3-2
 %endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
