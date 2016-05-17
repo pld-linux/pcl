@@ -11,7 +11,7 @@ Summary:	Point Cloud Library - library for point cloud processing
 Summary(pl.UTF-8):	Point Cloud Library - biblioteka do operacji na chmurze punktów
 Name:		pcl
 Version:	1.7.2
-Release:	10
+Release:	11
 License:	BSD
 Group:		Libraries
 #Source0Download: http://pointclouds.org/downloads/
