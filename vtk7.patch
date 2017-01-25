@@ -1,0 +1,127 @@
+diff -ur pcl-pcl-1.7.2/apps/src/render_views_tesselated_sphere.cpp pcl-pcl-1.7.2.vtk7/apps/src/render_views_tesselated_sphere.cpp
+--- pcl-pcl-1.7.2/apps/src/render_views_tesselated_sphere.cpp	2014-09-10 23:22:57.000000000 +0200
++++ pcl-pcl-1.7.2.vtk7/apps/src/render_views_tesselated_sphere.cpp	2017-01-25 07:58:21.891198767 +0100
+@@ -13,7 +13,7 @@
+ #include <vtkLoopSubdivisionFilter.h>
+ #include <vtkTriangle.h>
+ #include <vtkTransform.h>
+-#if VTK_MAJOR_VERSION==6 || (VTK_MAJOR_VERSION==5 && VTK_MINOR_VERSION>4)
++#if VTK_MAJOR_VERSION >= 6 || (VTK_MAJOR_VERSION==5 && VTK_MINOR_VERSION>4)
+ #include <vtkHardwareSelector.h>
+ #include <vtkSelectionNode.h>
+ #else 
+@@ -380,7 +380,7 @@
+       /////////////////////////////////////
+       // * Select visible cells (triangles)
+       /////////////////////////////////////
+-#if (VTK_MAJOR_VERSION==5 && VTK_MINOR_VERSION<6)
++#if (VTK_MAJOR_VERSION >= 6)
+       vtkSmartPointer<vtkVisibleCellSelector> selector = vtkSmartPointer<vtkVisibleCellSelector>::New ();
+       vtkSmartPointer<vtkIdTypeArray> selection = vtkSmartPointer<vtkIdTypeArray>::New ();
+ 
+diff -ur pcl-pcl-1.7.2/visualization/include/pcl/visualization/vtk.h pcl-pcl-1.7.2.vtk7/visualization/include/pcl/visualization/vtk.h
+--- pcl-pcl-1.7.2/visualization/include/pcl/visualization/vtk.h	2014-09-10 23:22:57.000000000 +0200
++++ pcl-pcl-1.7.2.vtk7/visualization/include/pcl/visualization/vtk.h	2017-01-25 07:58:21.891198767 +0100
+@@ -157,7 +157,7 @@
+ #endif
+ #include <vtkSelection.h>
+ 
+-#if VTK_MAJOR_VERSION==6 || (VTK_MAJOR_VERSION==5 && VTK_MINOR_VERSION>4)
++#if VTK_MAJOR_VERSION >= 6 || (VTK_MAJOR_VERSION==5 && VTK_MINOR_VERSION>4)
+ #include <vtkHardwareSelector.h>
+ #else
+ #include <vtkVisibleCellSelector.h>
+diff -ur pcl-pcl-1.7.2/visualization/src/pcl_visualizer.cpp pcl-pcl-1.7.2.vtk7/visualization/src/pcl_visualizer.cpp
+--- pcl-pcl-1.7.2/visualization/src/pcl_visualizer.cpp	2014-09-10 23:22:57.000000000 +0200
++++ pcl-pcl-1.7.2.vtk7/visualization/src/pcl_visualizer.cpp	2017-01-25 07:58:21.897865243 +0100
+@@ -52,7 +52,7 @@
+ #include <vtkMapper.h>
+ #include <vtkDataSetMapper.h>
+ 
+-#if VTK_MAJOR_VERSION==6 || (VTK_MAJOR_VERSION==5 && VTK_MINOR_VERSION>4)
++#if VTK_MAJOR_VERSION >= 6 || (VTK_MAJOR_VERSION==5 && VTK_MINOR_VERSION>4)
+ #include <vtkHardwareSelector.h>
+ #include <vtkSelectionNode.h>
+ #else
+@@ -3709,7 +3709,7 @@
+     /////////////////////////////////////
+     // * Select visible cells (triangles)
+     /////////////////////////////////////
+-#if  (VTK_MAJOR_VERSION==5 && VTK_MINOR_VERSION<6)
++#if  (VTK_MAJOR_VERSION >= 6)
+ 
+     vtkSmartPointer<vtkVisibleCellSelector> selector = vtkSmartPointer<vtkVisibleCellSelector>::New ();
+     vtkSmartPointer<vtkIdTypeArray> selection = vtkSmartPointer<vtkIdTypeArray>::New ();
+diff -ur pcl-pcl-1.7.2/visualization/tools/pcd_viewer.cpp pcl-pcl-1.7.2.vtk7/visualization/tools/pcd_viewer.cpp
+--- pcl-pcl-1.7.2/visualization/tools/pcd_viewer.cpp	2014-09-10 23:22:57.000000000 +0200
++++ pcl-pcl-1.7.2.vtk7/visualization/tools/pcd_viewer.cpp	2017-01-25 07:58:21.897865243 +0100
+@@ -47,7 +47,7 @@
+ #include <pcl/visualization/pcl_visualizer.h>
+ #include <pcl/visualization/image_viewer.h>
+ #include <pcl/visualization/histogram_visualizer.h>
+-#if VTK_MAJOR_VERSION==6 || (VTK_MAJOR_VERSION==5 && VTK_MINOR_VERSION>6)
++#if VTK_MAJOR_VERSION >= 6)
+ #include <pcl/visualization/pcl_plotter.h>
+ #endif
+ #include <pcl/visualization/point_picking_event.h>
+@@ -142,7 +142,7 @@
+ }
+ 
+ // Global visualizer object
+-#if VTK_MAJOR_VERSION==6 || (VTK_MAJOR_VERSION==5 && VTK_MINOR_VERSION>6)
++#if VTK_MAJOR_VERSION >= 6)
+ pcl::visualization::PCLPlotter ph_global;
+ #endif
+ boost::shared_ptr<pcl::visualization::PCLVisualizer> p;
+@@ -196,7 +196,7 @@
+     if (!isMultiDimensionalFeatureField (cloud->fields[i]))
+       continue;
+     PCL_INFO ("Multidimensional field found: %s\n", cloud->fields[i].name.c_str ());
+-#if VTK_MAJOR_VERSION==6 || (VTK_MAJOR_VERSION==5 && VTK_MINOR_VERSION>6)
++#if VTK_MAJOR_VERSION >= 6)
+     ph_global.addFeatureHistogram (*cloud, cloud->fields[i].name, idx, ss.str ());
+     ph_global.renderOnce ();
+ #endif
+@@ -326,7 +326,7 @@
+       shadings.push_back ("flat");
+ 
+   // Create the PCLVisualizer object
+-#if VTK_MAJOR_VERSION==6 || (VTK_MAJOR_VERSION==5 && VTK_MINOR_VERSION>6)
++#if VTK_MAJOR_VERSION >= 6)
+   boost::shared_ptr<pcl::visualization::PCLPlotter> ph;
+ #endif  
+   // Using min_p, max_p to set the global Y min/max range for the histogram
+@@ -429,13 +429,13 @@
+     {
+       cloud_name << argv[p_file_indices.at (i)];
+ 
+-#if VTK_MAJOR_VERSION==6 || (VTK_MAJOR_VERSION==5 && VTK_MINOR_VERSION>6)
++#if VTK_MAJOR_VERSION >= 6)
+       if (!ph)
+         ph.reset (new pcl::visualization::PCLPlotter);
+ #endif
+ 
+       pcl::getMinMax (*cloud, 0, cloud->fields[0].name, min_p, max_p);
+-#if VTK_MAJOR_VERSION==6 || (VTK_MAJOR_VERSION==5 && VTK_MINOR_VERSION>6)
++#if VTK_MAJOR_VERSION >= 6)
+       ph->addFeatureHistogram (*cloud, cloud->fields[0].name, cloud_name.str ());
+ #endif
+       print_info ("[done, "); print_value ("%g", tt.toc ()); print_info (" ms : "); print_value ("%d", cloud->fields[0].count); print_info (" points]\n");
+@@ -687,7 +687,7 @@
+     bool stopped = false;
+     do
+     {
+-#if VTK_MAJOR_VERSION==6 || (VTK_MAJOR_VERSION==5 && VTK_MINOR_VERSION>6)
++#if VTK_MAJOR_VERSION >= 6)
+       if (ph) ph->spinOnce ();
+ #endif
+ 
+@@ -717,7 +717,7 @@
+   else
+   {
+     // If no images, continue
+-#if VTK_MAJOR_VERSION==6 || (VTK_MAJOR_VERSION==5 && VTK_MINOR_VERSION>6)
++#if VTK_MAJOR_VERSION >= 6)
+     if (ph)
+     {
+       //print_highlight ("Setting the global Y range for all histograms to: "); print_value ("%f -> %f\n", min_p, max_p);
