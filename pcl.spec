@@ -24,6 +24,7 @@ Patch3:		eigen-dependency.patch
 Patch4:		vtk7.patch
 Patch5:		vtk71.patch
 Patch6:		vtkOpenGL2.patch
+Patch7:		fix-return-type.patch
 URL:		http://pointclouds.org/
 BuildRequires:	OpenGL-devel
 BuildRequires:	OpenGL-GLU-devel
@@ -118,6 +119,7 @@ Dokumentacja API oraz wprowadzenie do biblioteki PCL.
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
 
 %build
 mkdir build
