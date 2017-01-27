@@ -4,7 +4,7 @@
 %bcond_without	apidocs	# do not build and package API docs
 %bcond_without	fzapi	# Fotonic FZ API support
 %bcond_with	sse	# SSE/SSE2/SSE3 support
-%bcond_without	tawara	# Tawara video output (pcl_video)
+%bcond_with	tawara	# Tawara video output (pcl_video)
 %bcond_without	vtk	# VTK support in libpcl_{io,surface} + libpcl_{apps,visualization} libs
 
 Summary:	Point Cloud Library - library for point cloud processing
