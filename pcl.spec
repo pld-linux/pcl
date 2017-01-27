@@ -247,7 +247,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/pcl_transform_from_viewpoint
 %attr(755,root,root) %{_bindir}/pcl_transform_point_cloud
 %attr(755,root,root) %{_bindir}/pcl_vfh_estimation
-%{?with_tawara:%attr(755,root,root) %{_bindir}/pcl_video}
+%if %{with vtk}
+%attr(755,root,root) %{_bindir}/pcl_video
+%endif
 %attr(755,root,root) %{_bindir}/pcl_viewer
 %attr(755,root,root) %{_bindir}/pcl_virtual_scanner
 %attr(755,root,root) %{_bindir}/pcl_voxel_grid
