@@ -17,6 +17,7 @@ Group:		Libraries
 #Source0Download: http://pointclouds.org/downloads/
 Source0:	https://github.com/PointCloudLibrary/pcl/archive/%{name}-%{version}.tar.gz
 # Source0-md5:	4d4cfb6bf87cc1f08703deeeac1eb6e2
+Patch0:		oom.patch
 URL:		http://pointclouds.org/
 BuildRequires:	OpenGL-devel
 BuildRequires:	OpenGL-GLU-devel
@@ -106,6 +107,7 @@ Dokumentacja API oraz wprowadzenie do biblioteki PCL.
 
 %prep
 %setup -q -n pcl-pcl-%{version}
+%patch0 -p1
 
 %build
 mkdir build

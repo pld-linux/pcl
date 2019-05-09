@@ -1,0 +1,359 @@
+diff -up ./surface/CMakeLists.txt.oom ./surface/CMakeLists.txt
+--- ./surface/CMakeLists.txt.oom	2018-11-26 06:50:33.000000000 -0500
++++ ./surface/CMakeLists.txt	2019-02-16 20:54:35.581123820 -0500
+@@ -99,7 +99,12 @@ if(build)
+         src/marching_cubes_hoppe.cpp
+         src/marching_cubes_rbf.cpp
+         src/bilateral_upsampling.cpp
+-        src/mls.cpp
++        src/mls_n.cpp
++        src/mls_xyz.cpp
++        src/mls_xyzi.cpp
++        src/mls_xyzrgba.cpp
++        src/mls_xyzrgb.cpp
++        src/mls_xyzrgbn.cpp
+         src/organized_fast_mesh.cpp
+         src/simplification_remove_unused_vertices.cpp
+         src/surfel_smoothing.cpp
+diff -up ./surface/src/mls_n.cpp.oom ./surface/src/mls_n.cpp
+--- ./surface/src/mls_n.cpp.oom	2019-02-16 20:55:10.920291479 -0500
++++ ./surface/src/mls_n.cpp	2019-02-16 20:51:12.570160727 -0500
+@@ -0,0 +1,53 @@
++/*
++ * Software License Agreement (BSD License)
++ *
++ * Point Cloud Library (PCL) - www.pointclouds.org
++ * Copyright (c) 2009-2011, Willow Garage, Inc.
++ *
++ * All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ *
++ * * Redistributions of source code must retain the above copyright
++ *   notice, this list of conditions and the following disclaimer.
++ * * Redistributions in binary form must reproduce the above
++ *   copyright notice, this list of conditions and the following
++ *   disclaimer in the documentation and/or other materials provided
++ *   with the distribution.
++ * * Neither the name of Willow Garage, Inc. nor the names of its
++ *   contributors may be used to endorse or promote products derived
++ *   from this software without specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
++ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
++ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
++ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
++ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
++ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
++ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
++ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
++ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
++ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
++ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ * POSSIBILITY OF SUCH DAMAGE.
++ *
++ * $Id$
++ *
++ */
++
++#include <pcl/surface/mls.h>
++#include <pcl/surface/impl/mls.hpp>
++
++#ifndef PCL_NO_PRECOMPILE
++#include <pcl/point_types.h>
++#include <pcl/impl/instantiate.hpp>
++#ifdef PCL_ONLY_CORE_POINT_TYPES
++ // Instantiations of specific point types
++  PCL_INSTANTIATE_PRODUCT(MovingLeastSquares, ((pcl::PointXYZ)(pcl::PointXYZI)(pcl::PointXYZRGB)(pcl::PointXYZRGBA)(pcl::PointXYZRGBNormal)(pcl::PointNormal))
++                                              ((pcl::PointNormal)))
++#else
++  // PCL_INSTANTIATE_PRODUCT(MovingLeastSquares, (PCL_XYZ_POINT_TYPES)(PCL_XYZ_POINT_TYPES))
++#endif
++#endif    // PCL_NO_PRECOMPILE
+diff -up ./surface/src/mls_xyz.cpp.oom ./surface/src/mls_xyz.cpp
+--- ./surface/src/mls_xyz.cpp.oom	2019-02-16 20:54:51.891201203 -0500
++++ ./surface/src/mls_xyz.cpp	2019-02-16 20:51:33.080258031 -0500
+@@ -0,0 +1,53 @@
++/*
++ * Software License Agreement (BSD License)
++ *
++ * Point Cloud Library (PCL) - www.pointclouds.org
++ * Copyright (c) 2009-2011, Willow Garage, Inc.
++ *
++ * All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ *
++ * * Redistributions of source code must retain the above copyright
++ *   notice, this list of conditions and the following disclaimer.
++ * * Redistributions in binary form must reproduce the above
++ *   copyright notice, this list of conditions and the following
++ *   disclaimer in the documentation and/or other materials provided
++ *   with the distribution.
++ * * Neither the name of Willow Garage, Inc. nor the names of its
++ *   contributors may be used to endorse or promote products derived
++ *   from this software without specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
++ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
++ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
++ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
++ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
++ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
++ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
++ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
++ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
++ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
++ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ * POSSIBILITY OF SUCH DAMAGE.
++ *
++ * $Id$
++ *
++ */
++
++#include <pcl/surface/mls.h>
++#include <pcl/surface/impl/mls.hpp>
++
++#ifndef PCL_NO_PRECOMPILE
++#include <pcl/point_types.h>
++#include <pcl/impl/instantiate.hpp>
++#ifdef PCL_ONLY_CORE_POINT_TYPES
++ // Instantiations of specific point types
++  PCL_INSTANTIATE_PRODUCT(MovingLeastSquares, ((pcl::PointXYZ)(pcl::PointXYZI)(pcl::PointXYZRGB)(pcl::PointXYZRGBA)(pcl::PointXYZRGBNormal)(pcl::PointNormal))
++                                              ((pcl::PointXYZ)))
++#else
++  PCL_INSTANTIATE_PRODUCT(MovingLeastSquares, (PCL_XYZ_POINT_TYPES)(PCL_XYZ_POINT_TYPES))
++#endif
++#endif    // PCL_NO_PRECOMPILE
+diff -up ./surface/src/mls_xyzi.cpp.oom ./surface/src/mls_xyzi.cpp
+--- ./surface/src/mls_xyzi.cpp.oom	2019-02-16 20:54:55.133216580 -0500
++++ ./surface/src/mls_xyzi.cpp	2019-02-16 20:51:59.602383856 -0500
+@@ -0,0 +1,53 @@
++/*
++ * Software License Agreement (BSD License)
++ *
++ * Point Cloud Library (PCL) - www.pointclouds.org
++ * Copyright (c) 2009-2011, Willow Garage, Inc.
++ *
++ * All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ *
++ * * Redistributions of source code must retain the above copyright
++ *   notice, this list of conditions and the following disclaimer.
++ * * Redistributions in binary form must reproduce the above
++ *   copyright notice, this list of conditions and the following
++ *   disclaimer in the documentation and/or other materials provided
++ *   with the distribution.
++ * * Neither the name of Willow Garage, Inc. nor the names of its
++ *   contributors may be used to endorse or promote products derived
++ *   from this software without specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
++ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
++ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
++ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
++ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
++ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
++ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
++ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
++ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
++ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
++ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ * POSSIBILITY OF SUCH DAMAGE.
++ *
++ * $Id$
++ *
++ */
++
++#include <pcl/surface/mls.h>
++#include <pcl/surface/impl/mls.hpp>
++
++#ifndef PCL_NO_PRECOMPILE
++#include <pcl/point_types.h>
++#include <pcl/impl/instantiate.hpp>
++#ifdef PCL_ONLY_CORE_POINT_TYPES
++ // Instantiations of specific point types
++  PCL_INSTANTIATE_PRODUCT(MovingLeastSquares, ((pcl::PointXYZ)(pcl::PointXYZI)(pcl::PointXYZRGB)(pcl::PointXYZRGBA)(pcl::PointXYZRGBNormal)(pcl::PointNormal))
++                                              ((pcl::PointXYZI)))
++#else
++  // PCL_INSTANTIATE_PRODUCT(MovingLeastSquares, (PCL_XYZ_POINT_TYPES)(PCL_XYZ_POINT_TYPES))
++#endif
++#endif    // PCL_NO_PRECOMPILE
+diff -up ./surface/src/mls_xyzrgba.cpp.oom ./surface/src/mls_xyzrgba.cpp
+--- ./surface/src/mls_xyzrgba.cpp.oom	2019-02-16 20:54:57.832229383 -0500
++++ ./surface/src/mls_xyzrgba.cpp	2019-02-16 20:52:31.126533414 -0500
+@@ -0,0 +1,53 @@
++/*
++ * Software License Agreement (BSD License)
++ *
++ * Point Cloud Library (PCL) - www.pointclouds.org
++ * Copyright (c) 2009-2011, Willow Garage, Inc.
++ *
++ * All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ *
++ * * Redistributions of source code must retain the above copyright
++ *   notice, this list of conditions and the following disclaimer.
++ * * Redistributions in binary form must reproduce the above
++ *   copyright notice, this list of conditions and the following
++ *   disclaimer in the documentation and/or other materials provided
++ *   with the distribution.
++ * * Neither the name of Willow Garage, Inc. nor the names of its
++ *   contributors may be used to endorse or promote products derived
++ *   from this software without specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
++ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
++ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
++ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
++ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
++ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
++ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
++ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
++ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
++ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
++ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ * POSSIBILITY OF SUCH DAMAGE.
++ *
++ * $Id$
++ *
++ */
++
++#include <pcl/surface/mls.h>
++#include <pcl/surface/impl/mls.hpp>
++
++#ifndef PCL_NO_PRECOMPILE
++#include <pcl/point_types.h>
++#include <pcl/impl/instantiate.hpp>
++#ifdef PCL_ONLY_CORE_POINT_TYPES
++ // Instantiations of specific point types
++  PCL_INSTANTIATE_PRODUCT(MovingLeastSquares, ((pcl::PointXYZ)(pcl::PointXYZI)(pcl::PointXYZRGB)(pcl::PointXYZRGBA)(pcl::PointXYZRGBNormal)(pcl::PointNormal))
++                                              ((pcl::PointXYZRGBA)))
++#else
++  // PCL_INSTANTIATE_PRODUCT(MovingLeastSquares, (PCL_XYZ_POINT_TYPES)(PCL_XYZ_POINT_TYPES))
++#endif
++#endif    // PCL_NO_PRECOMPILE
+diff -up ./surface/src/mls_xyzrgb.cpp.oom ./surface/src/mls_xyzrgb.cpp
+--- ./surface/src/mls_xyzrgb.cpp.oom	2019-02-16 20:55:03.524256391 -0500
++++ ./surface/src/mls_xyzrgb.cpp	2019-02-16 20:53:02.609682766 -0500
+@@ -0,0 +1,53 @@
++/*
++ * Software License Agreement (BSD License)
++ *
++ * Point Cloud Library (PCL) - www.pointclouds.org
++ * Copyright (c) 2009-2011, Willow Garage, Inc.
++ *
++ * All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ *
++ * * Redistributions of source code must retain the above copyright
++ *   notice, this list of conditions and the following disclaimer.
++ * * Redistributions in binary form must reproduce the above
++ *   copyright notice, this list of conditions and the following
++ *   disclaimer in the documentation and/or other materials provided
++ *   with the distribution.
++ * * Neither the name of Willow Garage, Inc. nor the names of its
++ *   contributors may be used to endorse or promote products derived
++ *   from this software without specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
++ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
++ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
++ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
++ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
++ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
++ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
++ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
++ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
++ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
++ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ * POSSIBILITY OF SUCH DAMAGE.
++ *
++ * $Id$
++ *
++ */
++
++#include <pcl/surface/mls.h>
++#include <pcl/surface/impl/mls.hpp>
++
++#ifndef PCL_NO_PRECOMPILE
++#include <pcl/point_types.h>
++#include <pcl/impl/instantiate.hpp>
++#ifdef PCL_ONLY_CORE_POINT_TYPES
++ // Instantiations of specific point types
++  PCL_INSTANTIATE_PRODUCT(MovingLeastSquares, ((pcl::PointXYZ)(pcl::PointXYZI)(pcl::PointXYZRGB)(pcl::PointXYZRGBA)(pcl::PointXYZRGBNormal)(pcl::PointNormal))
++                                              ((pcl::PointXYZRGB)))
++#else
++  //PCL_INSTANTIATE_PRODUCT(MovingLeastSquares, (PCL_XYZ_POINT_TYPES)(PCL_XYZ_POINT_TYPES))
++#endif
++#endif    // PCL_NO_PRECOMPILE
+diff -up ./surface/src/mls_xyzrgbn.cpp.oom ./surface/src/mls_xyzrgbn.cpp
+--- ./surface/src/mls_xyzrgbn.cpp.oom	2019-02-16 20:55:07.030273022 -0500
++++ ./surface/src/mls_xyzrgbn.cpp	2019-02-16 20:53:34.215832702 -0500
+@@ -0,0 +1,53 @@
++/*
++ * Software License Agreement (BSD License)
++ *
++ * Point Cloud Library (PCL) - www.pointclouds.org
++ * Copyright (c) 2009-2011, Willow Garage, Inc.
++ *
++ * All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ *
++ * * Redistributions of source code must retain the above copyright
++ *   notice, this list of conditions and the following disclaimer.
++ * * Redistributions in binary form must reproduce the above
++ *   copyright notice, this list of conditions and the following
++ *   disclaimer in the documentation and/or other materials provided
++ *   with the distribution.
++ * * Neither the name of Willow Garage, Inc. nor the names of its
++ *   contributors may be used to endorse or promote products derived
++ *   from this software without specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
++ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
++ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
++ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
++ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
++ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
++ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
++ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
++ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
++ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
++ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ * POSSIBILITY OF SUCH DAMAGE.
++ *
++ * $Id$
++ *
++ */
++
++#include <pcl/surface/mls.h>
++#include <pcl/surface/impl/mls.hpp>
++
++#ifndef PCL_NO_PRECOMPILE
++#include <pcl/point_types.h>
++#include <pcl/impl/instantiate.hpp>
++#ifdef PCL_ONLY_CORE_POINT_TYPES
++ // Instantiations of specific point types
++  PCL_INSTANTIATE_PRODUCT(MovingLeastSquares, ((pcl::PointXYZ)(pcl::PointXYZI)(pcl::PointXYZRGB)(pcl::PointXYZRGBA)(pcl::PointXYZRGBNormal)(pcl::PointNormal))
++                                              ((pcl::PointXYZRGBNormal)))
++#else
++  //PCL_INSTANTIATE_PRODUCT(MovingLeastSquares, (PCL_XYZ_POINT_TYPES)(PCL_XYZ_POINT_TYPES))
++#endif
++#endif    // PCL_NO_PRECOMPILE
