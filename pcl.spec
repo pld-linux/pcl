@@ -55,6 +55,8 @@ BuildRequires:	texlive-latex-ams
 %endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
+%define		_enable_debug_packages	0
+
 %description
 The Point Cloud Library (PCL) is a standalone, large scale, open
 project for 3D point cloud processing.
