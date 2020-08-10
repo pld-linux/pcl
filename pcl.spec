@@ -10,18 +10,18 @@
 Summary:	Point Cloud Library - library for point cloud processing
 Summary(pl.UTF-8):	Point Cloud Library - biblioteka do operacji na chmurze punktów
 Name:		pcl
-Version:	1.9.1
-Release:	2
+Version:	1.11.0
+Release:	1
 License:	BSD
 Group:		Libraries
 #Source0Download: http://pointclouds.org/downloads/
 Source0:	https://github.com/PointCloudLibrary/pcl/archive/%{name}-%{version}.tar.gz
-# Source0-md5:	4d4cfb6bf87cc1f08703deeeac1eb6e2
+# Source0-md5:	3352d2d78a129c24ec27b863eed8a175
 Patch0:		oom.patch
+Patch1:		sphinx.patch
 URL:		http://pointclouds.org/
 BuildRequires:	OpenGL-devel
 BuildRequires:	OpenGL-GLU-devel
-BuildRequires:	OpenNI-devel
 BuildRequires:	OpenNI2-devel
 BuildRequires:	QtCore-devel >= 4
 BuildRequires:	QtOpenGL-devel >= 4
@@ -42,11 +42,10 @@ BuildRequires:	qt4-build >= 4
 BuildRequires:	python
 BuildRequires:	sed >= 4.0
 %{?with_tawara:BuildRequires:	tawara-devel}
-# FIXME: only vtk-devel is really required, the rest (java,python,tcl runtimes) only because of checks in VTK cmake files
+# FIXME: only vtk-devel is really required, the rest (java,python runtimes) only because of checks in VTK cmake files
 %{?with_vtk:BuildRequires:	vtk-devel >= 6}
 %{?with_vtk:BuildRequires:	vtk-java >= 6}
-%{?with_vtk:BuildRequires:	vtk-python >= 6}
-%{?with_vtk:BuildRequires:	vtk-tcl >= 6}
+%{?with_vtk:BuildRequires:	vtk-python3 >= 6}
 %if %{with apidocs}
 BuildRequires:	doxygen
 BuildRequires:	python3-sphinxcontrib-doxylink >= 1.3
@@ -110,13 +109,15 @@ Dokumentacja API oraz wprowadzenie do biblioteki PCL.
 %prep
 %setup -q -n pcl-pcl-%{version}
 %patch0 -p1
+%patch1 -p1
 
 %build
-mkdir build
+mkdir -p build
 cd build
 # LIB_INSTALL_DIR specified by PLD cmake macro is incompatible with what PCL expects
 %cmake .. \
 	-DLIB_INSTALL_DIR=%{_lib} \
+	-DWITH_OPENNI:BOOL=OFF \
 %if %{with fzapi}
 	-DFZAPI_DIR=/usr \
 	-DFZAPI_INCLUDE_DIR=/usr/include \
@@ -166,11 +167,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/pcl_ndt3d
 %attr(755,root,root) %{_bindir}/pcl_obj2pcd
 %attr(755,root,root) %{_bindir}/pcl_obj2ply
-%attr(755,root,root) %{_bindir}/pcl_oni2pcd
 %attr(755,root,root) %{_bindir}/pcl_openni2_viewer
-%attr(755,root,root) %{_bindir}/pcl_openni_grabber_depth_example
-%attr(755,root,root) %{_bindir}/pcl_openni_grabber_example
-%attr(755,root,root) %{_bindir}/pcl_openni_pcd_recorder
 %attr(755,root,root) %{_bindir}/pcl_outofcore_print
 %attr(755,root,root) %{_bindir}/pcl_outofcore_process
 %attr(755,root,root) %{_bindir}/pcl_outofcore_viewer
@@ -201,12 +198,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/pcl_extract_feature
 %attr(755,root,root) %{_bindir}/pcl_fpfh_estimation
 %attr(755,root,root) %{_bindir}/pcl_gp3_surface
-%attr(755,root,root) %{_bindir}/pcl_ground_based_rgbd_people_detector
 %attr(755,root,root) %{_bindir}/pcl_hdl_viewer_simple
 %attr(755,root,root) %{_bindir}/pcl_icp
 %attr(755,root,root) %{_bindir}/pcl_icp2d
-%attr(755,root,root) %{_bindir}/pcl_image_grabber_saver
-%attr(755,root,root) %{_bindir}/pcl_image_grabber_viewer
 %attr(755,root,root) %{_bindir}/pcl_marching_cubes_reconstruction
 %attr(755,root,root) %{_bindir}/pcl_mesh2pcd
 %attr(755,root,root) %{_bindir}/pcl_mesh_sampling
@@ -221,17 +215,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/pcl_obj_rec_ransac_result
 %attr(755,root,root) %{_bindir}/pcl_obj_rec_ransac_scene_opps
 %attr(755,root,root) %{_bindir}/pcl_octree_viewer
-%attr(755,root,root) %{_bindir}/pcl_oni_viewer
-%attr(755,root,root) %{_bindir}/pcl_openni_image
-%attr(755,root,root) %{_bindir}/pcl_openni_save_image
-%attr(755,root,root) %{_bindir}/pcl_openni_viewer
-%attr(755,root,root) %{_bindir}/pcl_organized_pcd_to_png
 %attr(755,root,root) %{_bindir}/pcl_outlier_removal
 %attr(755,root,root) %{_bindir}/pcl_passthrough_filter
 %attr(755,root,root) %{_bindir}/pcl_pcd2ply
 %attr(755,root,root) %{_bindir}/pcl_pcd2png
 %attr(755,root,root) %{_bindir}/pcl_pcd2vtk
-%attr(755,root,root) %{_bindir}/pcl_pcd_grabber_viewer
 %attr(755,root,root) %{_bindir}/pcl_pcd_image_viewer
 %attr(755,root,root) %{_bindir}/pcl_plane_projection
 %attr(755,root,root) %{_bindir}/pcl_ply2pcd
@@ -257,46 +245,46 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/pcl_vtk2ply
 %endif
 %attr(755,root,root) %{_libdir}/libpcl_common.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_common.so.1.9
+%attr(755,root,root) %ghost %{_libdir}/libpcl_common.so.1.11
 %attr(755,root,root) %{_libdir}/libpcl_features.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_features.so.1.9
+%attr(755,root,root) %ghost %{_libdir}/libpcl_features.so.1.11
 %attr(755,root,root) %{_libdir}/libpcl_filters.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_filters.so.1.9
+%attr(755,root,root) %ghost %{_libdir}/libpcl_filters.so.1.11
 %attr(755,root,root) %{_libdir}/libpcl_io.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_io.so.1.9
+%attr(755,root,root) %ghost %{_libdir}/libpcl_io.so.1.11
 %attr(755,root,root) %{_libdir}/libpcl_io_ply.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_io_ply.so.1.9
+%attr(755,root,root) %ghost %{_libdir}/libpcl_io_ply.so.1.11
 %attr(755,root,root) %{_libdir}/libpcl_kdtree.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_kdtree.so.1.9
+%attr(755,root,root) %ghost %{_libdir}/libpcl_kdtree.so.1.11
 %attr(755,root,root) %{_libdir}/libpcl_keypoints.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_keypoints.so.1.9
+%attr(755,root,root) %ghost %{_libdir}/libpcl_keypoints.so.1.11
 %attr(755,root,root) %{_libdir}/libpcl_octree.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_octree.so.1.9
+%attr(755,root,root) %ghost %{_libdir}/libpcl_octree.so.1.11
 %attr(755,root,root) %{_libdir}/libpcl_outofcore.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_outofcore.so.1.9
+%attr(755,root,root) %ghost %{_libdir}/libpcl_outofcore.so.1.11
 %attr(755,root,root) %{_libdir}/libpcl_recognition.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_recognition.so.1.9
+%attr(755,root,root) %ghost %{_libdir}/libpcl_recognition.so.1.11
 %attr(755,root,root) %{_libdir}/libpcl_registration.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_registration.so.1.9
+%attr(755,root,root) %ghost %{_libdir}/libpcl_registration.so.1.11
 %attr(755,root,root) %{_libdir}/libpcl_sample_consensus.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_sample_consensus.so.1.9
+%attr(755,root,root) %ghost %{_libdir}/libpcl_sample_consensus.so.1.11
 %attr(755,root,root) %{_libdir}/libpcl_search.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_search.so.1.9
+%attr(755,root,root) %ghost %{_libdir}/libpcl_search.so.1.11
 %attr(755,root,root) %{_libdir}/libpcl_segmentation.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_segmentation.so.1.9
+%attr(755,root,root) %ghost %{_libdir}/libpcl_segmentation.so.1.11
 %attr(755,root,root) %{_libdir}/libpcl_surface.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_surface.so.1.9
+%attr(755,root,root) %ghost %{_libdir}/libpcl_surface.so.1.11
 %attr(755,root,root) %{_libdir}/libpcl_tracking.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_tracking.so.1.9
+%attr(755,root,root) %ghost %{_libdir}/libpcl_tracking.so.1.11
 %attr(755,root,root) %{_libdir}/libpcl_ml.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_ml.so.1.9
+%attr(755,root,root) %ghost %{_libdir}/libpcl_ml.so.1.11
 %attr(755,root,root) %{_libdir}/libpcl_stereo.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_stereo.so.1.9
+%attr(755,root,root) %ghost %{_libdir}/libpcl_stereo.so.1.11
 %if %{with vtk}
 %attr(755,root,root) %{_libdir}/libpcl_people.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_people.so.1.9
+%attr(755,root,root) %ghost %{_libdir}/libpcl_people.so.1.11
 %attr(755,root,root) %{_libdir}/libpcl_visualization.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_visualization.so.1.9
+%attr(755,root,root) %ghost %{_libdir}/libpcl_visualization.so.1.11
 %endif
 
 %files devel
@@ -323,38 +311,38 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libpcl_people.so
 %attr(755,root,root) %{_libdir}/libpcl_visualization.so
 %endif
-%{_includedir}/pcl-1.9
-%{_pkgconfigdir}/pcl_common-1.9.pc
-%{_pkgconfigdir}/pcl_features-1.9.pc
-%{_pkgconfigdir}/pcl_filters-1.9.pc
-%{_pkgconfigdir}/pcl_geometry-1.9.pc
-%{_pkgconfigdir}/pcl_io-1.9.pc
-%{_pkgconfigdir}/pcl_kdtree-1.9.pc
-%{_pkgconfigdir}/pcl_keypoints-1.9.pc
-%{_pkgconfigdir}/pcl_octree-1.9.pc
-%{_pkgconfigdir}/pcl_outofcore-1.9.pc
-%{_pkgconfigdir}/pcl_recognition-1.9.pc
-%{_pkgconfigdir}/pcl_registration-1.9.pc
-%{_pkgconfigdir}/pcl_sample_consensus-1.9.pc
-%{_pkgconfigdir}/pcl_search-1.9.pc
-%{_pkgconfigdir}/pcl_segmentation-1.9.pc
-%{_pkgconfigdir}/pcl_surface-1.9.pc
-%{_pkgconfigdir}/pcl_tracking-1.9.pc
-%{_pkgconfigdir}/pcl_2d-1.9.pc
-%{_pkgconfigdir}/pcl_ml-1.9.pc
-%{_pkgconfigdir}/pcl_stereo-1.9.pc
+%{_includedir}/pcl-1.11
+%{_pkgconfigdir}/pcl_common-1.11.pc
+%{_pkgconfigdir}/pcl_features-1.11.pc
+%{_pkgconfigdir}/pcl_filters-1.11.pc
+%{_pkgconfigdir}/pcl_geometry-1.11.pc
+%{_pkgconfigdir}/pcl_io-1.11.pc
+%{_pkgconfigdir}/pcl_kdtree-1.11.pc
+%{_pkgconfigdir}/pcl_keypoints-1.11.pc
+%{_pkgconfigdir}/pcl_octree-1.11.pc
+%{_pkgconfigdir}/pcl_outofcore-1.11.pc
+%{_pkgconfigdir}/pcl_recognition-1.11.pc
+%{_pkgconfigdir}/pcl_registration-1.11.pc
+%{_pkgconfigdir}/pcl_sample_consensus-1.11.pc
+%{_pkgconfigdir}/pcl_search-1.11.pc
+%{_pkgconfigdir}/pcl_segmentation-1.11.pc
+%{_pkgconfigdir}/pcl_surface-1.11.pc
+%{_pkgconfigdir}/pcl_tracking-1.11.pc
+%{_pkgconfigdir}/pcl_2d-1.11.pc
+%{_pkgconfigdir}/pcl_ml-1.11.pc
+%{_pkgconfigdir}/pcl_stereo-1.11.pc
 %if %{with vtk}
-%{_pkgconfigdir}/pcl_people-1.9.pc
-%{_pkgconfigdir}/pcl_visualization-1.9.pc
+%{_pkgconfigdir}/pcl_people-1.11.pc
+%{_pkgconfigdir}/pcl_visualization-1.11.pc
 %endif
-%dir %{_datadir}/pcl-1.9
-%{_datadir}/pcl-1.9/PCLConfig*.cmake
+%dir %{_datadir}/pcl-1.11
+%{_datadir}/pcl-1.11/PCLConfig*.cmake
 
 %if %{with apidocs}
 %files apidocs
 %defattr(644,root,root,755)
-%dir %{_docdir}/pcl-1.9
-%{_docdir}/pcl-1.9/advanced
-%{_docdir}/pcl-1.9/html
-%{_docdir}/pcl-1.9/tutorials
+%dir %{_docdir}/pcl-1.11
+%{_docdir}/pcl-1.11/advanced
+%{_docdir}/pcl-1.11/html
+%{_docdir}/pcl-1.11/tutorials
 %endif

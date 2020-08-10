@@ -2,19 +2,19 @@ diff -up ./surface/CMakeLists.txt.oom ./surface/CMakeLists.txt
 --- ./surface/CMakeLists.txt.oom	2018-11-26 06:50:33.000000000 -0500
 +++ ./surface/CMakeLists.txt	2019-02-16 20:54:35.581123820 -0500
 @@ -99,7 +99,12 @@ if(build)
-         src/marching_cubes_hoppe.cpp
-         src/marching_cubes_rbf.cpp
-         src/bilateral_upsampling.cpp
--        src/mls.cpp
-+        src/mls_n.cpp
-+        src/mls_xyz.cpp
-+        src/mls_xyzi.cpp
-+        src/mls_xyzrgba.cpp
-+        src/mls_xyzrgb.cpp
-+        src/mls_xyzrgbn.cpp
-         src/organized_fast_mesh.cpp
-         src/simplification_remove_unused_vertices.cpp
-         src/surfel_smoothing.cpp
+   src/marching_cubes_hoppe.cpp
+   src/marching_cubes_rbf.cpp
+   src/bilateral_upsampling.cpp
+-  src/mls.cpp
++  src/mls_n.cpp
++  src/mls_xyz.cpp
++  src/mls_xyzi.cpp
++  src/mls_xyzrgba.cpp
++  src/mls_xyzrgb.cpp
++  src/mls_xyzrgbn.cpp
+   src/organized_fast_mesh.cpp
+   src/simplification_remove_unused_vertices.cpp
+   src/surfel_smoothing.cpp
 diff -up ./surface/src/mls_n.cpp.oom ./surface/src/mls_n.cpp
 --- ./surface/src/mls_n.cpp.oom	2019-02-16 20:55:10.920291479 -0500
 +++ ./surface/src/mls_n.cpp	2019-02-16 20:51:12.570160727 -0500
