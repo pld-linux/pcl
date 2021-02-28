@@ -96,9 +96,7 @@ Pliki nagłówkowe biblioteki PCL.
 Summary:	PCL API documentation and tutorials
 Summary(pl.UTF-8):	Dokumentacja API oraz wprowadzenie do biblioteki PCL
 Group:		Documentation
-%if "%{_rpmversion}" >= "5"
 BuildArch:	noarch
-%endif
 
 %description apidocs
 API documentation and tutorials for PCL library.
