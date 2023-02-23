@@ -40,6 +40,7 @@ BuildRequires:	netcdf-cxx-devel
 BuildRequires:	qhull-devel
 BuildRequires:	qt4-build >= 4
 BuildRequires:	python
+BuildRequires:	rpmbuild(macros) >= 1.605
 BuildRequires:	sed >= 4.0
 %{?with_tawara:BuildRequires:	tawara-devel}
 # FIXME: only vtk-devel is really required, the rest (java,python runtimes) only because of checks in VTK cmake files
