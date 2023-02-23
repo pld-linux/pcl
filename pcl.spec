@@ -40,6 +40,7 @@ BuildRequires:	netcdf-cxx-devel
 BuildRequires:	qhull-devel
 BuildRequires:	qt4-build >= 4
 BuildRequires:	python
+BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpmbuild(macros) >= 1.605
 BuildRequires:	sed >= 4.0
 %{?with_tawara:BuildRequires:	tawara-devel}
