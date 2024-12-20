@@ -25,8 +25,8 @@ URL:		http://pointclouds.org/
 BuildRequires:	OpenGL-devel
 BuildRequires:	OpenGL-GLU-devel
 BuildRequires:	OpenNI2-devel
-BuildRequires:	QtCore-devel >= 4
-BuildRequires:	QtOpenGL-devel >= 4
+BuildRequires:	Qt6Core-devel >= 4
+BuildRequires:	Qt6OpenGL-devel >= 4
 BuildRequires:	boost-devel >= 1.43
 BuildRequires:	cmake >= 2.8
 BuildRequires:	eigen3 >= 3
@@ -45,7 +45,7 @@ BuildRequires:	qhull-static
 BuildRequires:	qhull-c++-devel
 # because qhull-c++ cmake is broken
 BuildRequires:	qhull-c++-static
-BuildRequires:	qt4-build >= 4
+BuildRequires:	qt6-build
 BuildRequires:	python
 BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpmbuild(macros) >= 1.605
