@@ -10,15 +10,17 @@
 Summary:	Point Cloud Library - library for point cloud processing
 Summary(pl.UTF-8):	Point Cloud Library - biblioteka do operacji na chmurze punktów
 Name:		pcl
-Version:	1.11.0
-Release:	7
+Version:	1.14.1
+Release:	1
 License:	BSD
 Group:		Libraries
 #Source0Download: http://pointclouds.org/downloads/
 Source0:	https://github.com/PointCloudLibrary/pcl/archive/%{name}-%{version}.tar.gz
-# Source0-md5:	3352d2d78a129c24ec27b863eed8a175
+# Source0-md5:	cba2020adeb705ea178ee6365bd84368
 Patch0:		oom.patch
 Patch1:		sphinx.patch
+Patch2:		boost-1.87.patch
+Patch3:		boost-hash.patch
 URL:		http://pointclouds.org/
 BuildRequires:	OpenGL-devel
 BuildRequires:	OpenGL-GLU-devel
@@ -36,8 +38,13 @@ BuildRequires:	libpcap-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libusb-devel >= 1.0
-BuildRequires:	netcdf-cxx-devel
+BuildRequires:	netcdf-cxx4-devel
 BuildRequires:	qhull-devel
+# because qhull cmake is broken
+BuildRequires:	qhull-static
+BuildRequires:	qhull-c++-devel
+# because qhull-c++ cmake is broken
+BuildRequires:	qhull-c++-static
 BuildRequires:	qt4-build >= 4
 BuildRequires:	python
 BuildRequires:	rpm-build >= 4.6
@@ -108,8 +115,10 @@ Dokumentacja API oraz wprowadzenie do biblioteki PCL.
 
 %prep
 %setup -q -n pcl-pcl-%{version}
-%patch0 -p1
-%patch1 -p1
+%patch -P 0 -p1
+%patch -P 1 -p1
+%patch -P 2 -p1
+%patch -P 3 -p1
 
 %build
 mkdir -p build
@@ -168,9 +177,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/pcl_obj2pcd
 %attr(755,root,root) %{_bindir}/pcl_obj2ply
 %attr(755,root,root) %{_bindir}/pcl_openni2_viewer
-%attr(755,root,root) %{_bindir}/pcl_outofcore_print
-%attr(755,root,root) %{_bindir}/pcl_outofcore_process
-%attr(755,root,root) %{_bindir}/pcl_outofcore_viewer
 %attr(755,root,root) %{_bindir}/pcl_pcd_change_viewpoint
 %attr(755,root,root) %{_bindir}/pcl_pcd_convert_NaN_nan
 %attr(755,root,root) %{_bindir}/pcl_pcd_introduce_nan
@@ -245,46 +251,46 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/pcl_vtk2ply
 %endif
 %attr(755,root,root) %{_libdir}/libpcl_common.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_common.so.1.11
+%attr(755,root,root) %ghost %{_libdir}/libpcl_common.so.1.14
 %attr(755,root,root) %{_libdir}/libpcl_features.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_features.so.1.11
+%attr(755,root,root) %ghost %{_libdir}/libpcl_features.so.1.14
 %attr(755,root,root) %{_libdir}/libpcl_filters.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_filters.so.1.11
+%attr(755,root,root) %ghost %{_libdir}/libpcl_filters.so.1.14
 %attr(755,root,root) %{_libdir}/libpcl_io.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_io.so.1.11
+%attr(755,root,root) %ghost %{_libdir}/libpcl_io.so.1.14
 %attr(755,root,root) %{_libdir}/libpcl_io_ply.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_io_ply.so.1.11
+%attr(755,root,root) %ghost %{_libdir}/libpcl_io_ply.so.1.14
 %attr(755,root,root) %{_libdir}/libpcl_kdtree.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_kdtree.so.1.11
+%attr(755,root,root) %ghost %{_libdir}/libpcl_kdtree.so.1.14
 %attr(755,root,root) %{_libdir}/libpcl_keypoints.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_keypoints.so.1.11
+%attr(755,root,root) %ghost %{_libdir}/libpcl_keypoints.so.1.14
 %attr(755,root,root) %{_libdir}/libpcl_octree.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_octree.so.1.11
+%attr(755,root,root) %ghost %{_libdir}/libpcl_octree.so.1.14
 %attr(755,root,root) %{_libdir}/libpcl_outofcore.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_outofcore.so.1.11
+%attr(755,root,root) %ghost %{_libdir}/libpcl_outofcore.so.1.14
 %attr(755,root,root) %{_libdir}/libpcl_recognition.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_recognition.so.1.11
+%attr(755,root,root) %ghost %{_libdir}/libpcl_recognition.so.1.14
 %attr(755,root,root) %{_libdir}/libpcl_registration.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_registration.so.1.11
+%attr(755,root,root) %ghost %{_libdir}/libpcl_registration.so.1.14
 %attr(755,root,root) %{_libdir}/libpcl_sample_consensus.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_sample_consensus.so.1.11
+%attr(755,root,root) %ghost %{_libdir}/libpcl_sample_consensus.so.1.14
 %attr(755,root,root) %{_libdir}/libpcl_search.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_search.so.1.11
+%attr(755,root,root) %ghost %{_libdir}/libpcl_search.so.1.14
 %attr(755,root,root) %{_libdir}/libpcl_segmentation.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_segmentation.so.1.11
+%attr(755,root,root) %ghost %{_libdir}/libpcl_segmentation.so.1.14
 %attr(755,root,root) %{_libdir}/libpcl_surface.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_surface.so.1.11
+%attr(755,root,root) %ghost %{_libdir}/libpcl_surface.so.1.14
 %attr(755,root,root) %{_libdir}/libpcl_tracking.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_tracking.so.1.11
+%attr(755,root,root) %ghost %{_libdir}/libpcl_tracking.so.1.14
 %attr(755,root,root) %{_libdir}/libpcl_ml.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_ml.so.1.11
+%attr(755,root,root) %ghost %{_libdir}/libpcl_ml.so.1.14
 %attr(755,root,root) %{_libdir}/libpcl_stereo.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_stereo.so.1.11
+%attr(755,root,root) %ghost %{_libdir}/libpcl_stereo.so.1.14
 %if %{with vtk}
 %attr(755,root,root) %{_libdir}/libpcl_people.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_people.so.1.11
+%attr(755,root,root) %ghost %{_libdir}/libpcl_people.so.1.14
 %attr(755,root,root) %{_libdir}/libpcl_visualization.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpcl_visualization.so.1.11
+%attr(755,root,root) %ghost %{_libdir}/libpcl_visualization.so.1.14
 %endif
 
 %files devel
@@ -311,38 +317,38 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libpcl_people.so
 %attr(755,root,root) %{_libdir}/libpcl_visualization.so
 %endif
-%{_includedir}/pcl-1.11
-%{_pkgconfigdir}/pcl_common-1.11.pc
-%{_pkgconfigdir}/pcl_features-1.11.pc
-%{_pkgconfigdir}/pcl_filters-1.11.pc
-%{_pkgconfigdir}/pcl_geometry-1.11.pc
-%{_pkgconfigdir}/pcl_io-1.11.pc
-%{_pkgconfigdir}/pcl_kdtree-1.11.pc
-%{_pkgconfigdir}/pcl_keypoints-1.11.pc
-%{_pkgconfigdir}/pcl_octree-1.11.pc
-%{_pkgconfigdir}/pcl_outofcore-1.11.pc
-%{_pkgconfigdir}/pcl_recognition-1.11.pc
-%{_pkgconfigdir}/pcl_registration-1.11.pc
-%{_pkgconfigdir}/pcl_sample_consensus-1.11.pc
-%{_pkgconfigdir}/pcl_search-1.11.pc
-%{_pkgconfigdir}/pcl_segmentation-1.11.pc
-%{_pkgconfigdir}/pcl_surface-1.11.pc
-%{_pkgconfigdir}/pcl_tracking-1.11.pc
-%{_pkgconfigdir}/pcl_2d-1.11.pc
-%{_pkgconfigdir}/pcl_ml-1.11.pc
-%{_pkgconfigdir}/pcl_stereo-1.11.pc
+%{_includedir}/pcl-1.14
+%{_pkgconfigdir}/pcl_common.pc
+%{_pkgconfigdir}/pcl_features.pc
+%{_pkgconfigdir}/pcl_filters.pc
+%{_pkgconfigdir}/pcl_geometry.pc
+%{_pkgconfigdir}/pcl_io.pc
+%{_pkgconfigdir}/pcl_kdtree.pc
+%{_pkgconfigdir}/pcl_keypoints.pc
+%{_pkgconfigdir}/pcl_octree.pc
+%{_pkgconfigdir}/pcl_outofcore.pc
+%{_pkgconfigdir}/pcl_recognition.pc
+%{_pkgconfigdir}/pcl_registration.pc
+%{_pkgconfigdir}/pcl_sample_consensus.pc
+%{_pkgconfigdir}/pcl_search.pc
+%{_pkgconfigdir}/pcl_segmentation.pc
+%{_pkgconfigdir}/pcl_surface.pc
+%{_pkgconfigdir}/pcl_tracking.pc
+%{_pkgconfigdir}/pcl_2d.pc
+%{_pkgconfigdir}/pcl_ml.pc
+%{_pkgconfigdir}/pcl_stereo.pc
 %if %{with vtk}
-%{_pkgconfigdir}/pcl_people-1.11.pc
-%{_pkgconfigdir}/pcl_visualization-1.11.pc
+%{_pkgconfigdir}/pcl_people.pc
+%{_pkgconfigdir}/pcl_visualization.pc
 %endif
-%dir %{_datadir}/pcl-1.11
-%{_datadir}/pcl-1.11/PCLConfig*.cmake
+%dir %{_datadir}/pcl-1.14
+%{_datadir}/pcl-1.14/PCLConfig*.cmake
 
 %if %{with apidocs}
 %files apidocs
 %defattr(644,root,root,755)
-%dir %{_docdir}/pcl-1.11
-%{_docdir}/pcl-1.11/advanced
-%{_docdir}/pcl-1.11/html
-%{_docdir}/pcl-1.11/tutorials
+%dir %{_docdir}/pcl-1.14
+%{_docdir}/pcl-1.14/advanced
+%{_docdir}/pcl-1.14/html
+%{_docdir}/pcl-1.14/tutorials
 %endif
