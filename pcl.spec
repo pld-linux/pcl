@@ -11,7 +11,7 @@ Summary:	Point Cloud Library - library for point cloud processing
 Summary(pl.UTF-8):	Point Cloud Library - biblioteka do operacji na chmurze punktów
 Name:		pcl
 Version:	1.14.1
-Release:	3
+Release:	4
 License:	BSD
 Group:		Libraries
 #Source0Download: http://pointclouds.org/downloads/
@@ -21,6 +21,7 @@ Patch0:		oom.patch
 Patch1:		sphinx.patch
 Patch2:		boost-1.87.patch
 Patch3:		boost-hash.patch
+Patch4:		gcc15.patch
 URL:		http://pointclouds.org/
 BuildRequires:	OpenGL-devel
 BuildRequires:	OpenGL-GLU-devel
@@ -119,6 +120,7 @@ Dokumentacja API oraz wprowadzenie do biblioteki PCL.
 %patch -P 1 -p1
 %patch -P 2 -p1
 %patch -P 3 -p1
+%patch -P 4 -p1
 
 %build
 mkdir -p build
